@@ -212,7 +212,7 @@ void AudacityProject::CreateMenusAndCommands()
    c->AddItem(wxT("Close"), _("&Close"), FN(OnClose), wxT("Ctrl+W"));
 
    if (!mCleanSpeechMode) {
-      c->AddItem(wxT("Save"), _("&Save Project"), FN(OnSave), wxT("Ctrl+S"),
+      c->AddItem(wxT("Save"), _("&Save"), FN(OnSave), wxT("Ctrl+S"),
                  AudioIONotBusyFlag | UnsavedChangesFlag,
                  AudioIONotBusyFlag | UnsavedChangesFlag);
       c->AddItem(wxT("SaveAs"), _("Save Project &As..."), FN(OnSaveAs));
@@ -2843,7 +2843,7 @@ void AudacityProject::OnSave()
              exportFilename.GetFullPath(wxPATH_NATIVE), // filename
              false, // selected only
              0.0, mTracks->GetEndTime()); // range
-   mDirty = false;
+   mUndoManager.StateSaved();
 }
 
 void AudacityProject::OnSaveAs()
