@@ -2827,7 +2827,23 @@ void AudacityProject::OnClose()
 
 void AudacityProject::OnSave()
 {
-   Save();
+   Exporter e;
+
+   // Instead of saving we export in a special mode:
+   // - predefined filename
+   // - silent overwriting of existing file
+   
+   wxFileName exportFilename = GetFileName();
+   exportFilename.SetExt(wxT("wav"));
+   
+   wxGetApp().SetMissingAliasedFileWarningShouldShow(true);
+   e.Process(this, 
+             1, // mono
+             wxT("WAV"), // type
+             exportFilename.GetFullPath(wxPATH_NATIVE), // filename
+             false, // selected only
+             0.0, mTracks->GetEndTime()); // range
+   mDirty = false;
 }
 
 void AudacityProject::OnSaveAs()
